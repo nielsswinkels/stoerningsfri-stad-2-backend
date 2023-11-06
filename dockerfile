@@ -19,3 +19,5 @@ EXPOSE 8080
 
 # Run the app when the container launches
 CMD ["node", "server.js"]
+
+# Adding a random comment here to trigger a git commit
