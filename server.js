@@ -64,6 +64,12 @@ async function runQuery(res, query, params) {
     }
 }
 
+// allow cross origin requests
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
+
 app.get('/', async (req, res) => {
     res.send('Have a nice day! '+getHappyEmoji());
 });
