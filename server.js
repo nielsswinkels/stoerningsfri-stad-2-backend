@@ -65,29 +65,38 @@ async function runQuery(res, query, params) {
 }
 
 app.get('/', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.dow LIMIT 100');
+    res.send('Have a nice day! 🌞')
 });
 
 app.get('/dow', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.dow LIMIT 100');
+    await runQuery(res, 'SELECT * FROM sfs.dow');
+});
+
+app.get('/tod', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs.tod');
 });
 
 app.get('/scenarios', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.scenario LIMIT 100');
+    await runQuery(res, 'SELECT * FROM sfs.scenario');
 });
 
 app.get('/sites', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.site LIMIT 100');
+    await runQuery(res, 'SELECT * FROM sfs.site');
 });
 
 app.get('/site_transport_demand/:site/:scenario', async (req, res) => {
     const site = req.params.site;
     const scenario = req.params.scenario;
-    await runQuery(res, 'SELECT * FROM sfs.site_transport_demand WHERE fk_site_id=$1 AND fk_scenario_id=$2 LIMIT 100', [site, scenario]);
+    await runQuery(res, 'SELECT * FROM sfs.site_transport_demand WHERE fk_site_id=$1 AND fk_scenario_id=$2', [site, scenario]);
 });
 
 app.get('/sim_links', async (req, res) => {
-    await runQuery(res, 'SELECT st_astext(st_transform(geom, 4326))  FROM sfs.sim_links LIMIT 100');
+    await runQuery(res, 'SELECT st_astext(st_transform(geom, 4326))  FROM sfs.sim_links');
+});
+
+app.get('/sim_out/:scenario', async (req, res) => {
+    const scenario = req.params.scenario;
+    await runQuery(res, 'SELECT * FROM sfs.sim_out WHERE scenario_id=$1', [scenario]);
 });
 
 
