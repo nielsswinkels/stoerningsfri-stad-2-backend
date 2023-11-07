@@ -67,6 +67,7 @@ async function runQuery(res, query, params) {
 // allow cross origin requests
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'content-type');
     next();
 });
 
