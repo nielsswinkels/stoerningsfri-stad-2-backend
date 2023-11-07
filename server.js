@@ -43,37 +43,56 @@ async function mySimpleTunnel(sshOptions, port, autoClose = true){
 let pool
 
 async function connectDatabase(query) {
-  await mySimpleTunnel(sshOptions, dbConfig.port);
-  pool = new Pool(dbConfig);
+    try {
+        await mySimpleTunnel(sshOptions, dbConfig.port);
+        pool = new Pool(dbConfig);
+    } catch (error) {
+        console.error('Error connecting to database: ', err.stack);
+    }
 }
 
-async function runQuery(query) {
-    return await pool.query(query);
+async function runQuery(res, query, params) {
+    const client = await pool.connect();
+    try {
+        const result = await client.query(query, params);
+        res.send(result.rows);
+    } catch (err) {
+        console.error('Error executing query', err.stack);
+        res.status(500).send('Server error');
+    } finally {
+        client.release();
+    }
 }
 
 app.get('/', async (req, res) => {
-    const result = await runQuery('SELECT * FROM sfs.dow LIMIT 100');
-    res.send(result.rows);
+    await runQuery(res, 'SELECT * FROM sfs.dow LIMIT 100');
 });
 
 app.get('/dow', async (req, res) => {
-    const result = await runQuery('SELECT * FROM sfs.dow LIMIT 100');
-    res.send(result.rows);
+    await runQuery(res, 'SELECT * FROM sfs.dow LIMIT 100');
 });
 
-app.get('/scenario', async (req, res) => {
-    const result = await runQuery('SELECT * FROM sfs.scenario LIMIT 100');
-    res.send(result.rows);
+app.get('/scenarios', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs.scenario LIMIT 100');
+});
+
+app.get('/sites', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs.site LIMIT 100');
+});
+
+app.get('/site_transport_demand/:site/:scenario', async (req, res) => {
+    const site = req.params.site;
+    const scenario = req.params.scenario;
+    await runQuery(res, 'SELECT * FROM sfs.site_transport_demand WHERE fk_site_id=$1 AND fk_scenario_id=$2 LIMIT 100', [site, scenario]);
 });
 
 app.get('/sim_links', async (req, res) => {
-    const result = await runQuery('SELECT st_astext(st_transform(geom, 4326))  FROM sfs.sim_links LIMIT 100');
-    res.send(result.rows);
+    await runQuery(res, 'SELECT st_astext(st_transform(geom, 4326))  FROM sfs.sim_links LIMIT 100');
 });
 
 
 
-app.listen(port, () => {
-    connectDatabase();
+app.listen(port, async () => {
+    await connectDatabase();
     console.log(`App listening at http://localhost:${port}`);
 });
