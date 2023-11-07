@@ -65,7 +65,7 @@ async function runQuery(res, query, params) {
 }
 
 app.get('/', async (req, res) => {
-    res.send('Have a nice day! 🌞')
+    res.send('Have a nice day! '+getHappyEmoji());
 });
 
 app.get('/dow', async (req, res) => {
@@ -99,9 +99,13 @@ app.get('/sim_out/:scenario', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs.sim_out WHERE scenario_id=$1', [scenario]);
 });
 
+const happyEmojis = ['🌞', '✨', '🌼', '🤸‍♂️', '☕', '🐶', '🍌', '🤠', '🤓', '👽', '🦄', '🦚'];
 
+function getHappyEmoji() {
+    return happyEmojis[Math.floor(Math.random()*happyEmojis.length)];
+}
 
 app.listen(port, async () => {
     await connectDatabase();
-    console.log(`App listening at http://localhost:${port}`);
+    console.log(`App listening at http://localhost:${port} ` + getHappyEmoji());
 });
