@@ -52,15 +52,18 @@ async function connectDatabase(query) {
 }
 
 async function runQuery(res, query, params) {
-    const client = await pool.connect();
+    let client = null;
     try {
+        client = await pool.connect();
         const result = await client.query(query, params);
         res.send(result.rows);
     } catch (err) {
         console.error('Error executing query', err.stack);
         res.status(500).send('Server error');
     } finally {
-        client.release();
+        if(client) {
+            client.release();
+        }
     }
 }
 
