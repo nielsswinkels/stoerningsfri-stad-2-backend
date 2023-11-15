@@ -79,6 +79,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', async (req, res) => {
+    console.log('Sending greeting.');
     res.send('Have a nice day! '+getHappyEmoji());
 });
 
