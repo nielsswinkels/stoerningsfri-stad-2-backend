@@ -38,7 +38,11 @@ async function mySimpleTunnel(sshOptions, port, autoClose = true){
         port: port
     }
 
-    return createTunnel(tunnelOptions, serverOptions, sshOptions, forwardOptions);
+    let [server, conn] = await createTunnel(tunnelOptions, serverOptions, sshOptions, forwardOptions);
+    server.on('connection', (connection) =>{
+        console.log('Server made a connection');
+    });
+    return [server, conn]
 }
 
 let pool
@@ -56,9 +60,10 @@ async function runQuery(res, query, params) {
     console.log(`Running query:` + query);
     let client = null;
     try {
-        client = await pool.connect();
-        console.log(`Client connected from pool`);
-        const result = await client.query(query, params);
+        // client = await pool.connect();
+        // console.log(`Client connected from pool`);
+        // const result = await client.query(query, params);
+        const result = await pool.query(query, params);
         console.log(`Results received`);
         res.send(result.rows);
     } catch (err) {
