@@ -127,6 +127,10 @@ function getHappyEmoji() {
 }
 
 app.listen(port, async () => {
+    if (process.env.ENABLED != 1) {
+        console.log('Server not enabled in env settings. Bye bye for now! 👋')
+        process.exit(0)
+    }
     await connectDatabase();
     console.log(`App listening at http://localhost:${port} ` + getHappyEmoji());
 });
