@@ -10,7 +10,9 @@ const sshOptions = {
     host: process.env.SSH_HOST,
     port: process.env.SSH_PORT,
     username: process.env.SSH_USERNAME,
-    password: process.env.SSH_PASSWORD
+    password: process.env.SSH_PASSWORD,
+    keepAlive: true,
+    autoClose: false
 };
 
 const dbConfig = {
@@ -31,7 +33,7 @@ async function mySimpleTunnel(sshOptions, port, autoClose = true){
     }
 
     let tunnelOptions = {
-        autoClose:autoClose
+        autoClose:false
     }
     
     let serverOptions = {
