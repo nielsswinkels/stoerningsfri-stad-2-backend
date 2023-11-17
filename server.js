@@ -114,7 +114,7 @@ app.get('/site_transport_demand/:site/:scenario', async (req, res) => {
 });
 
 app.get('/sim_links', async (req, res) => {
-    await runQuery(res, 'SELECT st_astext(st_transform(geom, 4326))  FROM sfs.sim_links');
+    await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs.sim_links');
 });
 
 app.get('/sim_out/:scenario', async (req, res) => {
