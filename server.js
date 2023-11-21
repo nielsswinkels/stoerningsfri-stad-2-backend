@@ -107,6 +107,10 @@ app.get('/sites', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs.site');
 });
 
+app.get('/scenario_site', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs.scenario_site');
+});
+
 app.get('/site_transport_demand/:site/:scenario', async (req, res) => {
     const site = req.params.site;
     const scenario = req.params.scenario;
