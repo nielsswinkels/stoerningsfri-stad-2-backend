@@ -130,6 +130,10 @@ app.get('/sim_out/:scenario', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs.sim_out WHERE scenario_id=$1', [scenario]);
 });
 
+app.get('/sim_out', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs.sim_out');
+});
+
 const happyEmojis = ['🌞', '✨', '🌼', '🤸‍♂️', '☕', '🐶', '🍌', '🤠', '🤓', '👽', '🦄', '🦚'];
 
 function getHappyEmoji() {
