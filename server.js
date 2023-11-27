@@ -117,6 +117,10 @@ app.get('/site_transport_demand/:site/:scenario', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs.site_transport_demand WHERE fk_site_id=$1 AND fk_scenario_id=$2', [site, scenario]);
 });
 
+app.get('/site_transport_demands', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs.site_transport_demand');
+});
+
 app.get('/sim_links', async (req, res) => {
     await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs.sim_links');
 });
