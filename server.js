@@ -125,11 +125,26 @@ app.get('/sim_links', async (req, res) => {
     await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs.sim_links');
 });
 
-app.get('/sim_out/:scenario/:linkId', async (req, res) => {
-    const scenario = req.params.scenario;
-    const linkId = req.params.linkId;
-    await runQuery(res, 'SELECT * FROM sfs.sim_out WHERE scenario_id=$1', [scenario, linkId]);
+app.get('/sim_links_with_out', async (req, res) => {
+    await runQuery(res,
+        `SELECT
+            sfs.sim_links.link_id,
+            st_astext(st_transform(sfs.sim_links.geom, 4326)),
+            sfs.sim_out.scenario_id,
+            sfs.sim_out.tod_id,
+            sfs.sim_out.dow_id,
+            sfs.sim_out.delay,
+            sfs.sim_out.trucks
+        FROM sfs.sim_links
+        LEFT JOIN sfs.sim_out ON sfs.sim_links.link_id = sfs.sim_out.link_id`
+        );
 });
+
+// app.get('/sim_out/:scenario/:linkId', async (req, res) => {
+//     const scenario = req.params.scenario;
+//     const linkId = req.params.linkId;
+//     await runQuery(res, 'SELECT * FROM sfs.sim_out WHERE scenario_id=$1', [scenario, linkId]);
+// });
 
 app.get('/sim_out', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs.sim_out');
