@@ -125,9 +125,10 @@ app.get('/sim_links', async (req, res) => {
     await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs.sim_links');
 });
 
-app.get('/sim_out/:scenario', async (req, res) => {
+app.get('/sim_out/:scenario/:linkId', async (req, res) => {
     const scenario = req.params.scenario;
-    await runQuery(res, 'SELECT * FROM sfs.sim_out WHERE scenario_id=$1', [scenario]);
+    const linkId = req.params.linkId;
+    await runQuery(res, 'SELECT * FROM sfs.sim_out WHERE scenario_id=$1', [scenario, linkId]);
 });
 
 app.get('/sim_out', async (req, res) => {
