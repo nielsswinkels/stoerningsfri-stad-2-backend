@@ -104,7 +104,7 @@ app.get('/scenarios', async (req, res) => {
 });
 
 app.get('/sites', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.site');
+    await runQuery(res, 'SELECT *, st_astext(st_transform(polygon_geom, 4326)) as polygon_geom, st_astext(st_transform(point_geom, 4326)) as point_geom FROM sfs.site');
 });
 
 app.get('/scenario_site', async (req, res) => {
