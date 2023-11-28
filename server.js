@@ -125,6 +125,23 @@ app.get('/sim_links', async (req, res) => {
     await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs.sim_links');
 });
 
+app.get('/sim_links_with_out/:scenario/:tod', async (req, res) => {
+    const scenario = req.params.scenario;
+    const tod = req.params.tod;
+    await runQuery(res,
+        `SELECT
+            sfs.sim_links.link_id,
+            st_astext(st_transform(sfs.sim_links.geom, 4326)),
+            sfs.sim_out_all.scenario_id,
+            sfs.sim_out_all.tod_id,
+            sfs.sim_out_all.delay,
+            sfs.sim_out_all.trucks
+        FROM sfs.sim_links
+        LEFT JOIN sfs.sim_out_all ON sfs.sim_links.link_id = sfs.sim_out_all.link_id
+        WHERE sfs.sim_out_all.scenario_id = $1 AND sfs.sim_out_all.tod_id = $2`, [scenario, tod]
+        );
+});
+
 app.get('/sim_links_with_out', async (req, res) => {
     await runQuery(res,
         `SELECT
