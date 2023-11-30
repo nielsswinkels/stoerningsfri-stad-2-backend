@@ -131,7 +131,7 @@ app.get('/sim_links_with_out/:scenario/:tod', async (req, res) => {
     await runQuery(res,
         `SELECT
             sfs.sim_links.link_id,
-            st_astext(st_transform(sfs.sim_links.geom, 4326)),
+            st_astext(st_transform(sfs.sim_links.geom, 4326)) as geom,
             sfs.sim_out_all.scenario_id,
             sfs.sim_out_all.tod_id,
             sfs.sim_out_all.delay,
