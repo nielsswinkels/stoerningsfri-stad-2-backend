@@ -66,7 +66,7 @@ async function runQuery(res, query, params) {
         // console.log(`Client connected from pool`);
         // const result = await client.query(query, params);
         const result = await pool.query(query, params);
-        console.log(`Results received`);
+        console.log(`Results received ` + result.rows.length);
         res.send(result.rows);
     } catch (err) {
         console.error('Error executing query', err.stack);
@@ -87,8 +87,9 @@ app.use((req, res, next) => {
 });
 
 app.get('/', async (req, res) => {
-    console.log('Sending greeting.');
-    res.send('Have a nice day! '+getHappyEmoji());
+    let emoji = getHappyEmoji();
+    console.log('Sending greeting ' + emoji);
+    res.send('Have a nice day! '+ emoji);
 });
 
 app.get('/dow', async (req, res) => {
