@@ -92,15 +92,15 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/dow', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.dow');
+    await runQuery(res, 'SELECT * FROM sfs.dow');
 });
 
 app.get('/tod', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.tod');
+    await runQuery(res, 'SELECT * FROM sfs.tod');
 });
 
 app.get('/scenarios', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.scenario');
+    await runQuery(res, 'SELECT * FROM sfs.scenario');
 });
 
 app.get('/sites', async (req, res) => {
@@ -108,21 +108,21 @@ app.get('/sites', async (req, res) => {
 });
 
 app.get('/scenario_site', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.scenario_site');
+    await runQuery(res, 'SELECT * FROM sfs.scenario_site');
 });
 
 app.get('/site_transport_demand/:site/:scenario', async (req, res) => {
     const site = req.params.site;
     const scenario = req.params.scenario;
-    await runQuery(res, 'SELECT * FROM sfs2.site_transport_demand WHERE fk_site_id=$1 AND fk_scenario_id=$2', [site, scenario]);
+    await runQuery(res, 'SELECT * FROM sfs.site_transport_demand WHERE fk_site_id=$1 AND fk_scenario_id=$2', [site, scenario]);
 });
 
 app.get('/site_transport_demands', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.site_transport_demand');
+    await runQuery(res, 'SELECT * FROM sfs.site_transport_demand');
 });
 
 app.get('/sim_links', async (req, res) => {
-    await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs2.sim_links');
+    await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs.sim_links');
 });
 
 app.get('/sim_links_with_out/:scenario/:tod', async (req, res) => {
@@ -130,14 +130,14 @@ app.get('/sim_links_with_out/:scenario/:tod', async (req, res) => {
     const tod = req.params.tod;
     await runQuery(res,
         `SELECT
-            sfs2.sim_links.link_id,
-            st_astext(st_transform(sfs2.sim_links.geom, 4326)) as geom,
+            sfs.sim_links.link_id,
+            st_astext(st_transform(sfs.sim_links.geom, 4326)) as geom,
             sfs.sim_out_all.scenario_id,
             sfs.sim_out_all.tod_id,
             sfs.sim_out_all.delay,
             sfs.sim_out_all.trucks
-        FROM sfs2.sim_links
-        LEFT JOIN sfs.sim_out_all ON sfs2.sim_links.link_id = sfs.sim_out_all.link_id
+        FROM sfs.sim_links
+        LEFT JOIN sfs.sim_out_all ON sfs.sim_links.link_id = sfs.sim_out_all.link_id
         WHERE sfs.sim_out_all.scenario_id = $1 AND sfs.sim_out_all.tod_id = $2`, [scenario, tod]
         );
 });
@@ -145,26 +145,26 @@ app.get('/sim_links_with_out/:scenario/:tod', async (req, res) => {
 app.get('/sim_links_with_out', async (req, res) => {
     await runQuery(res,
         `SELECT
-            sfs2.sim_links.link_id,
-            st_astext(st_transform(sfs2.sim_links.geom, 4326)),
-            sfs2.sim_out.scenario_id,
-            sfs2.sim_out.tod_id,
-            sfs2.sim_out.dow_id,
-            sfs2.sim_out.delay,
-            sfs2.sim_out.trucks
-        FROM sfs2.sim_links
-        LEFT JOIN sfs2.sim_out ON sfs2.sim_links.link_id = sfs2.sim_out.link_id`
+            sfs.sim_links.link_id,
+            st_astext(st_transform(sfs.sim_links.geom, 4326)),
+            sfs.sim_out.scenario_id,
+            sfs.sim_out.tod_id,
+            sfs.sim_out.dow_id,
+            sfs.sim_out.delay,
+            sfs.sim_out.trucks
+        FROM sfs.sim_links
+        LEFT JOIN sfs.sim_out ON sfs.sim_links.link_id = sfs.sim_out.link_id`
         );
 });
 
 // app.get('/sim_out/:scenario/:linkId', async (req, res) => {
 //     const scenario = req.params.scenario;
 //     const linkId = req.params.linkId;
-//     await runQuery(res, 'SELECT * FROM sfs2.sim_out WHERE scenario_id=$1', [scenario, linkId]);
+//     await runQuery(res, 'SELECT * FROM sfs.sim_out WHERE scenario_id=$1', [scenario, linkId]);
 // });
 
 app.get('/sim_out', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.sim_out');
+    await runQuery(res, 'SELECT * FROM sfs.sim_out');
 });
 
 const happyEmojis = ['🌞', '✨', '🌼', '🤸‍♂️', '☕', '🐶', '🍌', '🤠', '🤓', '👽', '🦄', '🦚'];
