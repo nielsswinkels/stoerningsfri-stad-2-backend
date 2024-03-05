@@ -93,37 +93,37 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/dow', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.dow');
+    await runQuery(res, 'SELECT * FROM sfs2.dow');
 });
 
 app.get('/tod', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.tod');
+    await runQuery(res, 'SELECT * FROM sfs2.tod');
 });
 
 app.get('/scenarios', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.scenario');
+    await runQuery(res, 'SELECT * FROM sfs2.scenario');
 });
 
 app.get('/sites', async (req, res) => {
-    await runQuery(res, 'SELECT *, st_astext(st_transform(polygon_geom, 4326)) as polygon_geom, st_astext(st_transform(point_geom, 4326)) as point_geom FROM sfs.site');
+    await runQuery(res, 'SELECT *, st_astext(st_transform(polygon_geom, 4326)) as polygon_geom, st_astext(st_transform(point_geom, 4326)) as point_geom FROM sfs2.site');
 });
 
 app.get('/scenario_site', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.scenario_site');
+    await runQuery(res, 'SELECT * FROM sfs2.scenario_site');
 });
 
 app.get('/site_transport_demand/:site/:scenario', async (req, res) => {
     const site = req.params.site;
     const scenario = req.params.scenario;
-    await runQuery(res, 'SELECT * FROM sfs.site_transport_demand WHERE fk_site_id=$1 AND fk_scenario_id=$2', [site, scenario]);
+    await runQuery(res, 'SELECT * FROM sfs2.site_transport_demand WHERE fk_site_id=$1 AND fk_scenario_id=$2', [site, scenario]);
 });
 
 app.get('/site_transport_demands', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.site_transport_demand');
+    await runQuery(res, 'SELECT * FROM sfs2.site_transport_demand');
 });
 
 app.get('/sim_links', async (req, res) => {
-    await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs.sim_links');
+    await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs2.sim_links');
 });
 
 app.get('/sim_links_with_out/:scenario/:tod', async (req, res) => {
