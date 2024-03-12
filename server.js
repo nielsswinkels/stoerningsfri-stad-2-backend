@@ -168,6 +168,38 @@ app.get('/sim_out', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs.sim_out');
 });
 
+app.get('/sensors', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs2.sensor_locations');
+});
+
+app.get('/particle_levels_for_sensor/:sensor_id', async (req, res) => {
+    const sensor_id = req.params.sensor_id;
+    await runQuery(res, 'SELECT * FROM sfs2.particle_levels WHERE sensor_id = $1', [sensor_id]);
+});
+
+app.get('/particle_levels_for_sensor_and_time/:sensor_id/:start/:end', async (req, res) => {
+    const sensor_id = req.params.sensor_id;
+    const start = req.params.start;
+    const end = req.params.end;
+    await runQuery(res, 'SELECT * FROM sfs2.particle_levels WHERE sensor_id = $1 AND time >= $2 AND time <= $3', [sensor_id, start, end]);
+});
+
+app.get('/sound_levels_for_sensor/:sensor_id', async (req, res) => {
+    const sensor_id = req.params.sensor_id;
+    await runQuery(res, 'SELECT * FROM sfs2.sound_levels WHERE sensor_id = $1', [sensor_id]);
+});
+
+app.get('/sound_levels_for_sensor_and_time/:sensor_id/:start/:end', async (req, res) => {
+    const sensor_id = req.params.sensor_id;
+    const start = req.params.start;
+    const end = req.params.end;
+    await runQuery(res, 'SELECT * FROM sfs2.sound_levels WHERE sensor_id = $1 AND time >= $2 AND time <= $3', [sensor_id, start, end]);
+});
+
+app.get('/zones', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs2.zones');
+});
+
 const happyEmojis = ['🌞', '✨', '🌼', '🤸‍♂️', '☕', '🐶', '🍌', '🤠', '🤓', '👽', '🦄', '🦚'];
 
 function getHappyEmoji() {
