@@ -23,5 +23,5 @@ Save the docker image:
 `sudo docker save -o stoerningsfri-stad-2-backend.tar stoerningsfri-stad-2-backend:latest`
 
 Run the Docker container: (You will need to fill in the correct passwords etc)
-`docker run -p 3000:3000 -d stoerningsfri-stad-2-backend -e "SSH_USERNAME=xx" -e "SSH_PASSWORD=xx" -e "SSH_HOST=1.1.1.1" -e "SSH_PORT=1234" -e "DESTINATION_IP=1.1.1.1" -e "DESTINATION_PORT=1234" -e "DATABASE_PORT=1234" -e "DATABASE_USERNAME=" -e "DATABASE_PASSWORD=xx" -e "DATABASE_NAME=xx"`
+`docker run -p 3000:3000 -d stoerningsfri-stad-2-backend -e "SSH_USERNAME=xx" -e "SSH_PASSWORD=xx" -e "SSH_HOST=1.1.1.1" -e "SSH_PORT=1234" -e "DESTINATION_IP=1.1.1.1" -e "DESTINATION_PORT=1234" -e "DATABASE_PORT=1234" -e "DATABASE_USERNAME=" -e "DATABASE_PASSWORD=xx" -e "DATABASE_NAME=xx" -e "ENABLED=1"`
 
