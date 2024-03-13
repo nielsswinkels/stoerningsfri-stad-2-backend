@@ -165,11 +165,11 @@ app.get('/sim_links_with_out', async (req, res) => {
 // });
 
 app.get('/sim_out', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs.sim_out');
+    await runQuery(res, 'SELECT * FROM sfs2.sim_out');
 });
 
 app.get('/sensors', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.sensor_locations');
+    await runQuery(res, 'SELECT sensor_id, name, description, st_astext(st_transform(geom, 4326)) FROM sfs2.sensor_locations');
 });
 
 app.get('/particle_levels_for_sensor/:sensor_id', async (req, res) => {
