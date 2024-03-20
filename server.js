@@ -100,16 +100,24 @@ app.get('/tod', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs2.tod');
 });
 
+app.get('/phase', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs2.phase');
+});
+
 app.get('/scenarios', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs2.scenario');
+});
+
+app.get('/scenario_site', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs2.scenario_site');
 });
 
 app.get('/sites', async (req, res) => {
     await runQuery(res, 'SELECT *, st_astext(st_transform(polygon_geom, 4326)) as polygon_geom, st_astext(st_transform(point_geom, 4326)) as point_geom FROM sfs2.site');
 });
 
-app.get('/scenario_site', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.scenario_site');
+app.get('/site_dow', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs2.scenario');
 });
 
 app.get('/site_transport_demand/:site/:scenario', async (req, res) => {
@@ -122,6 +130,18 @@ app.get('/site_transport_demands', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs2.site_transport_demand');
 });
 
+app.get('/site_truck_monitoring', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs2.site_truck_monitoring');
+});
+
+app.get('/site_truck_prediction', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs2.site_truck_prediction');
+});
+
+app.get('/site_route', async (req, res) => {
+    await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326)) as geom  FROM sfs2.site_route');
+});
+
 app.get('/sim_links', async (req, res) => {
     await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs2.sim_links');
 });
@@ -131,15 +151,15 @@ app.get('/sim_links_with_out/:scenario/:tod', async (req, res) => {
     const tod = req.params.tod;
     await runQuery(res,
         `SELECT
-            sfs.sim_links.link_id,
-            st_astext(st_transform(sfs.sim_links.geom, 4326)) as geom,
-            sfs.sim_out_all.scenario_id,
-            sfs.sim_out_all.tod_id,
-            sfs.sim_out_all.delay,
-            sfs.sim_out_all.trucks
-        FROM sfs.sim_links
-        LEFT JOIN sfs.sim_out_all ON sfs.sim_links.link_id = sfs.sim_out_all.link_id
-        WHERE sfs.sim_out_all.scenario_id = $1 AND sfs.sim_out_all.tod_id = $2`, [scenario, tod]
+            sfs2.sim_links.link_id,
+            st_astext(st_transform(sfs2.sim_links.geom, 4326)) as geom,
+            sfs2.sim_out_all.scenario_id,
+            sfs2.sim_out_all.tod_id,
+            sfs2.sim_out_all.delay,
+            sfs2.sim_out_all.trucks
+        FROM sfs2.sim_links
+        LEFT JOIN sfs2.sim_out_all ON sfs2.sim_links.link_id = sfs2.sim_out_all.link_id
+        WHERE sfs2.sim_out_all.scenario_id = $1 AND sfs2.sim_out_all.tod_id = $2`, [scenario, tod]
         );
 });
 
