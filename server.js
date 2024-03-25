@@ -153,13 +153,17 @@ app.get('/sim_links_with_out/:scenario/:tod', async (req, res) => {
         `SELECT
             sfs2.sim_links.link_id,
             st_astext(st_transform(sfs2.sim_links.geom, 4326)) as geom,
-            sfs2.sim_out_all.scenario_id,
-            sfs2.sim_out_all.tod_id,
-            sfs2.sim_out_all.delay,
-            sfs2.sim_out_all.trucks
+            sfs2.sim_out.scenario_id,
+            sfs2.sim_out.tod_id,
+            sfs2.sim_out.dow_id,
+            sfs2.sim_out.tot_flow,
+            sfs2.sim_out.truck_flow,
+            sfs2.sim_out.mean_speed,
+            sfs2.sim_out.mean_delay,
+            sfs2.sim_out.tot_delay
         FROM sfs2.sim_links
-        LEFT JOIN sfs2.sim_out_all ON sfs2.sim_links.link_id = sfs2.sim_out_all.link_id
-        WHERE sfs2.sim_out_all.scenario_id = $1 AND sfs2.sim_out_all.tod_id = $2`, [scenario, tod]
+        LEFT JOIN sfs2.sim_out ON sfs2.sim_links.link_id = sfs2.sim_out.link_id
+        WHERE sfs2.sim_out.scenario_id = $1 AND sfs2.sim_out.tod_id = $2`, [scenario, tod]
         );
 });
 
