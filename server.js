@@ -60,6 +60,7 @@ async function connectDatabase(query) {
 
 async function runQuery(res, query, params) {
     console.log(`Running query:` + query);
+    console.log(`With params:` + params);
     let client = null;
     try {
         // client = await pool.connect();
@@ -146,8 +147,9 @@ app.get('/sim_links', async (req, res) => {
     await runQuery(res, 'SELECT link_id, st_astext(st_transform(geom, 4326))  FROM sfs2.sim_links');
 });
 
-app.get('/sim_links_with_out/:scenario/:tod', async (req, res) => {
+app.get('/sim_links_with_out/:scenario/:dow/:tod', async (req, res) => {
     const scenario = req.params.scenario;
+    const dow = req.params.dow;
     const tod = req.params.tod;
     await runQuery(res,
         `SELECT
@@ -163,7 +165,7 @@ app.get('/sim_links_with_out/:scenario/:tod', async (req, res) => {
             sfs2.sim_out.tot_delay
         FROM sfs2.sim_links
         LEFT JOIN sfs2.sim_out ON sfs2.sim_links.link_id = sfs2.sim_out.link_id
-        WHERE sfs2.sim_out.scenario_id = $1 AND sfs2.sim_out.tod_id = $2`, [scenario, tod]
+        WHERE sfs2.sim_out.scenario_id = $1 AND sfs2.sim_out.dow_id = $2 AND sfs2.sim_out.tod_id = $3`, [scenario, dow, tod]
         );
 });
 
