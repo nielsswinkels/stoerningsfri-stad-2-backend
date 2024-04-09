@@ -101,7 +101,7 @@ app.get('/tod', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs2.tod');
 });
 
-app.get('/phase', async (req, res) => {
+app.get('/phases', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs2.phase');
 });
 
