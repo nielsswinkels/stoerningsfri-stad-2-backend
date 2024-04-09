@@ -198,6 +198,10 @@ app.get('/sensors', async (req, res) => {
     await runQuery(res, 'SELECT sensor_id, name, description, st_astext(st_transform(geom, 4326)) as geom FROM sfs2.sensor_locations');
 });
 
+app.get('/particle_levels', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs2.particle_levels LIMIT 1000', [sensor_id]);
+});
+
 app.get('/particle_levels_for_sensor/:sensor_id', async (req, res) => {
     const sensor_id = req.params.sensor_id;
     await runQuery(res, 'SELECT * FROM sfs2.particle_levels WHERE sensor_id = $1', [sensor_id]);
@@ -208,6 +212,10 @@ app.get('/particle_levels_for_sensor_and_time/:sensor_id/:start/:end', async (re
     const start = req.params.start;
     const end = req.params.end;
     await runQuery(res, 'SELECT * FROM sfs2.particle_levels WHERE sensor_id = $1 AND time >= $2 AND time <= $3', [sensor_id, start, end]);
+});
+
+app.get('/sound_levels', async (req, res) => {
+    await runQuery(res, 'SELECT * FROM sfs2.sound_levels LIMIT 1000', [sensor_id]);
 });
 
 app.get('/sound_levels_for_sensor/:sensor_id', async (req, res) => {
