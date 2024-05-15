@@ -154,7 +154,9 @@ app.get('/sim_links_with_out/:scenario/:dow/:tod', async (req, res) => {
     await runQuery(res,
         `SELECT
             sfs2.sim_links.link_id,
-            st_astext(st_transform(sfs2.sim_links.geom, 4326)) as geom,
+            st_astext(st_transform(st_offsetcurve(sfs2.sim_links.geom, 10), 4326)) as geom,
+            sfs2.sim_out.from_node,
+            sfs2.sim_out.to_node,
             sfs2.sim_out.scenario_id,
             sfs2.sim_out.tod_id,
             sfs2.sim_out.dow_id,
@@ -192,6 +194,29 @@ app.get('/sim_links_with_out', async (req, res) => {
 
 app.get('/sim_out', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs2.sim_out');
+});
+
+app.get('/sim_out/:scenario/:dow/:tod', async (req, res) => {
+    const scenario = req.params.scenario;
+    const dow = req.params.dow;
+    const tod = req.params.tod;
+    await runQuery(res,
+        `SELECT
+            link_id,
+            st_astext(st_transform(st_offsetcurve(geom, -5), 4326)) as geom,
+            from_node,
+            to_node,
+            scenario_id,
+            tod_id,
+            dow_id,
+            tot_flow,
+            truck_flow,
+            mean_speed,
+            mean_delay,
+            tot_delay
+        FROM sfs2.sim_out
+        WHERE scenario_id = $1 AND dow_id = $2 AND tod_id = $3`, [scenario, dow, tod]
+        );
 });
 
 app.get('/sensors', async (req, res) => {
