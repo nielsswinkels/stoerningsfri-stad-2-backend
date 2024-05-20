@@ -256,7 +256,7 @@ app.get('/sound_levels_for_sensor_and_time/:sensor_id/:start/:end', async (req, 
 });
 
 app.get('/zones', async (req, res) => {
-    await runQuery(res, 'SELECT zone_id, code, name, typeno, totbef, externzon, st_astext(st_transform(geom, 4326)) as geom FROM sfs2.zones WHERE geom is not null');
+    await runQuery(res, 'SELECT zone_id, code, name, typeno, totbef, externzon, st_astext(st_transform(geom, 4326)) as geom, st_area(geom) as area FROM sfs2.zones WHERE geom is not null');
 });
 
 const happyEmojis = ['🌞', '✨', '🌼', '🤸‍♂️', '☕', '🐶', '🍌', '🤠', '🤓', '👽', '🦄', '🦚'];
