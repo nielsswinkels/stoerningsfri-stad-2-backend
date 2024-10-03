@@ -225,6 +225,7 @@ app.get('/sensors', async (req, res) => {
 
 app.get('/particle_levels', async (req, res) => {
     await runQuery(res, 'SELECT * FROM sfs2.particle_levels LIMIT 1000');
+    // await runQuery(res, 'SELECT * FROM sfs_sensors.pm LIMIT 10000');
 });
 
 app.get('/particle_levels_for_sensor/:sensor_id', async (req, res) => {
@@ -257,6 +258,10 @@ app.get('/sound_levels_for_sensor_and_time/:sensor_id/:start/:end', async (req, 
 
 app.get('/zones', async (req, res) => {
     await runQuery(res, 'SELECT zone_id, code, name, typeno, totbef, externzon, st_astext(st_transform(geom, 4326)) as geom, st_area(geom) as area FROM sfs2.zones WHERE geom is not null');
+});
+
+app.get('/pois', async (req, res) => {
+    await runQuery(res, 'SELECT id, name, amenity, st_astext(st_transform(geom, 4326)) as geom, FROM sfs2.points_of_interest WHERE geom is not null');
 });
 
 const happyEmojis = ['🌞', '✨', '🌼', '🤸‍♂️', '☕', '🐶', '🍌', '🤠', '🤓', '👽', '🦄', '🦚'];
