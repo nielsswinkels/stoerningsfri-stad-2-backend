@@ -261,7 +261,8 @@ app.get('/zones', async (req, res) => {
 });
 
 app.get('/pois', async (req, res) => {
-    await runQuery(res, 'SELECT id, name, amenity, st_astext(st_transform(geom, 4326)) as geom, FROM sfs2.points_of_interest WHERE geom is not null');
+    // await runQuery(res, 'SELECT id, name, amenity, st_astext(st_transform(geom, 4326)) as geom, FROM sfs2.points_of_interest WHERE geom is not null');
+    await runQuery(res, 'SELECT id, name, amenity, st_astext(st_transform(geom, 4326)) as geom, FROM sfs2.schools WHERE geom is not null');
 });
 
 const happyEmojis = ['🌞', '✨', '🌼', '🤸‍♂️', '☕', '🐶', '🍌', '🤠', '🤓', '👽', '🦄', '🦚'];
