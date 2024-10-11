@@ -106,7 +106,7 @@ app.get('/phases', async (req, res) => {
 });
 
 app.get('/scenarios', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.scenario');
+    await runQuery(res, 'SELECT * FROM sfs2.scenario WHERE visible=TRUE');
 });
 
 app.get('/scenario_site', async (req, res) => {
