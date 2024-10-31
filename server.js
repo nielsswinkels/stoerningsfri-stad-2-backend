@@ -220,7 +220,7 @@ app.get('/sim_out/:scenario/:dow/:tod', async (req, res) => {
 });
 
 app.get('/sensors', async (req, res) => {
-    await runQuery(res, 'SELECT sensor_id, name, description, st_astext(st_transform(geom, 4326)) as geom FROM sfs2.sensor_locations');
+    await runQuery(res, 'SELECT sensor_id, name, description, st_astext(st_transform(geom, 4326)) as geom FROM sfs2.sensor_locations LIMIT 10000');
 });
 
 app.get('/particle_levels', async (req, res) => {
