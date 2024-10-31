@@ -224,8 +224,8 @@ app.get('/sensors', async (req, res) => {
 });
 
 app.get('/particle_levels', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.particle_levels LIMIT 10000');
-    // await runQuery(res, 'SELECT * FROM sfs_sensors.pm LIMIT 10000');
+    await runQuery(res, 'SELECT * FROM sfs2.particle_levels LIMIT 5000');
+    // await runQuery(res, 'SELECT * FROM sfs_sensors.pm LIMIT 5000');
 });
 
 app.get('/particle_levels_for_sensor/:sensor_id', async (req, res) => {
@@ -241,7 +241,7 @@ app.get('/particle_levels_for_sensor_and_time/:sensor_id/:start/:end', async (re
 });
 
 app.get('/sound_levels', async (req, res) => {
-    await runQuery(res, 'SELECT * FROM sfs2.sound_levels LIMIT 10000');
+    await runQuery(res, 'SELECT * FROM sfs2.sound_levels LIMIT 5000');
 });
 
 app.get('/sound_levels_for_sensor/:sensor_id', async (req, res) => {
